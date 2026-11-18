@@ -1,0 +1,4 @@
+TOP=hdc_soc_top
+LANE=32
+CLK_NS=10.0
+VCD=<repo>/hw/synth/vcd/busy32.vcd

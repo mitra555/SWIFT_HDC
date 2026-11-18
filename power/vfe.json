@@ -1,0 +1,9 @@
+{
+ "cycles": 361999.5,
+ "span_ps": 3619995000,
+ "flops": 261779,
+ "flops_annotated": 17906,
+ "macros": 0,
+ "macros_found": 0,
+ "sram": {}
+}

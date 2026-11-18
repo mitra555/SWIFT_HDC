@@ -1,0 +1,295 @@
+import hdcu_pkg::*;
+module tb_scoreboard;
+  logic clk = 0; always #5 clk = ~clk;
+  logic rst_n;
+  logic req_valid; nov_instr_t req; logic req_clear_first;
+  logic nov_busy, nov_done;
+  logic [HVSIZE_W-1:0] csr_hvsize;
+
+  // Prototype rows below are written as 32 x 32-bit lanes; repack them into
+  // NOV_ACC_W-bit lanes (values are small, so the low bits are the value).
+  function automatic logic [SIMD*NOV_ACC_W-1:0] repack32(input logic [SIMD*32-1:0] v);
+    logic [SIMD*NOV_ACC_W-1:0] r;
+    for (int l = 0; l < SIMD; l++) r[l*NOV_ACC_W +: NOV_ACC_W] = v[l*32 +: NOV_ACC_W];
+    return r;
+  endfunction
+  int pass_count = 0; int total_count = 0;
+
+  nov_top #(.BIT_SPM_DEPTH(262144), .WIDE_SPM_WORDS(8192)) dut (.clk(clk), .rst_n(rst_n), .req_valid(req_valid), .req(req),
+               .req_clear_first(req_clear_first), .nov_busy(nov_busy), .nov_done(nov_done),
+               .csr_hvsize(csr_hvsize), .host_bit_re(1'b0), .host_bit_we(1'b0), .host_wide_re(1'b0), .host_wide_we(1'b0), .host_addr(20'd0), .host_wdata(32'd0), .host_bit_rdata(), .host_wide_rdata());
+
+  task automatic issue(nov_op_e op, logic [SPM_ADDR_W-1:0] rd, rs1, rs2,
+                        logic signed [NOV_WEIGHT_W-1:0] w, logic [15:0] k, logic clear_first);
+    begin
+      @(posedge clk);
+      req.op=op; req.rd=rd; req.rs1=rs1; req.rs2=rs2; req.weight=w; req.k_protos=k;
+      req_clear_first = clear_first; req_valid = 1'b1;
+      @(posedge clk); req_valid = 1'b0;
+      wait(nov_done); @(posedge clk);
+    end
+  endtask
+
+  task automatic check(string name, longint got, longint exp);
+    begin
+      total_count++;
+      if (got === exp) begin pass_count++; end
+      else $display("  FAIL %s: got=%0d expected=%0d", name, got, exp);
+    end
+  endtask
+
+  initial begin
+    rst_n=0; req_valid=0; req_clear_first=0;
+    repeat(3) @(posedge clk); rst_n=1;
+
+    // ===== TEST A: multi-chunk multi-group weighted encode + sign =====
+    csr_hvsize = 96;
+    dut.u_bit_spm_a.mem[0] = 32'habeb9592;
+    dut.u_bit_spm_b.mem[0] = 32'habeb9592;
+    dut.u_bit_spm_a.mem[3] = 32'h19322fed;
+    dut.u_bit_spm_b.mem[3] = 32'h19322fed;
+    dut.u_bit_spm_a.mem[1] = 32'hb16e2d5c;
+    dut.u_bit_spm_b.mem[1] = 32'hb16e2d5c;
+    dut.u_bit_spm_a.mem[4] = 32'hc4381836;
+    dut.u_bit_spm_b.mem[4] = 32'hc4381836;
+    dut.u_bit_spm_a.mem[2] = 32'h157cf9c6;
+    dut.u_bit_spm_b.mem[2] = 32'h157cf9c6;
+    dut.u_bit_spm_a.mem[5] = 32'h5ac96628;
+    dut.u_bit_spm_b.mem[5] = 32'h5ac96628;
+    dut.u_bit_spm_a.mem[6] = 32'h3c9f90c9;
+    dut.u_bit_spm_b.mem[6] = 32'h3c9f90c9;
+    dut.u_bit_spm_a.mem[9] = 32'hfc9799a7;
+    dut.u_bit_spm_b.mem[9] = 32'hfc9799a7;
+    dut.u_bit_spm_a.mem[7] = 32'h04762a22;
+    dut.u_bit_spm_b.mem[7] = 32'h04762a22;
+    dut.u_bit_spm_a.mem[10] = 32'hc9ed0248;
+    dut.u_bit_spm_b.mem[10] = 32'hc9ed0248;
+    dut.u_bit_spm_a.mem[8] = 32'h07e36d60;
+    dut.u_bit_spm_b.mem[8] = 32'h07e36d60;
+    dut.u_bit_spm_a.mem[11] = 32'h040e1e30;
+    dut.u_bit_spm_b.mem[11] = 32'h040e1e30;
+    dut.u_bit_spm_a.mem[12] = 32'ha5f80a0a;
+    dut.u_bit_spm_b.mem[12] = 32'ha5f80a0a;
+    dut.u_bit_spm_a.mem[15] = 32'h9da618fd;
+    dut.u_bit_spm_b.mem[15] = 32'h9da618fd;
+    dut.u_bit_spm_a.mem[13] = 32'h9f8f5ffb;
+    dut.u_bit_spm_b.mem[13] = 32'h9f8f5ffb;
+    dut.u_bit_spm_a.mem[16] = 32'h76ab1475;
+    dut.u_bit_spm_b.mem[16] = 32'h76ab1475;
+    dut.u_bit_spm_a.mem[14] = 32'h7bf78a4d;
+    dut.u_bit_spm_b.mem[14] = 32'h7bf78a4d;
+    dut.u_bit_spm_a.mem[17] = 32'h2607ad5f;
+    dut.u_bit_spm_b.mem[17] = 32'h2607ad5f;
+    dut.u_bit_spm_a.mem[18] = 32'h175e9941;
+    dut.u_bit_spm_b.mem[18] = 32'h175e9941;
+    dut.u_bit_spm_a.mem[21] = 32'h1d4a2b12;
+    dut.u_bit_spm_b.mem[21] = 32'h1d4a2b12;
+    dut.u_bit_spm_a.mem[19] = 32'h2edf0743;
+    dut.u_bit_spm_b.mem[19] = 32'h2edf0743;
+    dut.u_bit_spm_a.mem[22] = 32'hd868c2cf;
+    dut.u_bit_spm_b.mem[22] = 32'hd868c2cf;
+    dut.u_bit_spm_a.mem[20] = 32'hb6a20bb0;
+    dut.u_bit_spm_b.mem[20] = 32'hb6a20bb0;
+    dut.u_bit_spm_a.mem[23] = 32'h03be0e66;
+    dut.u_bit_spm_b.mem[23] = 32'h03be0e66;
+    issue(NOV_BINDMAC, 13'd1000, 13'd0, 13'd3, 4'sd1, 16'd0, 1'b1);
+    issue(NOV_BINDMAC, 13'd1000, 13'd6, 13'd9, 4'sd1, 16'd0, 1'b0);
+    issue(NOV_BINDMAC, 13'd1000, 13'd12, 13'd15, 4'sd3, 16'd0, 1'b0);
+    issue(NOV_BINDMAC, 13'd1000, 13'd18, 13'd21, 4'sd3, 16'd0, 1'b0);
+    issue(NOV_SIGN, 13'd2000, 13'd1000, 13'd0, 4'sd0, 16'd0, 1'b0);
+    @(posedge clk);
+    check("A.X.c0.l0", $signed(dut.u_wide_spm.mem[1000][0*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c0.l1", $signed(dut.u_wide_spm.mem[1000][1*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c0.l2", $signed(dut.u_wide_spm.mem[1000][2*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c0.l3", $signed(dut.u_wide_spm.mem[1000][3*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c0.l4", $signed(dut.u_wide_spm.mem[1000][4*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c0.l5", $signed(dut.u_wide_spm.mem[1000][5*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c0.l6", $signed(dut.u_wide_spm.mem[1000][6*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c0.l7", $signed(dut.u_wide_spm.mem[1000][7*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c0.l8", $signed(dut.u_wide_spm.mem[1000][8*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c0.l9", $signed(dut.u_wide_spm.mem[1000][9*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c0.l10", $signed(dut.u_wide_spm.mem[1000][10*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c0.l11", $signed(dut.u_wide_spm.mem[1000][11*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c0.l12", $signed(dut.u_wide_spm.mem[1000][12*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c0.l13", $signed(dut.u_wide_spm.mem[1000][13*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l14", $signed(dut.u_wide_spm.mem[1000][14*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c0.l15", $signed(dut.u_wide_spm.mem[1000][15*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l16", $signed(dut.u_wide_spm.mem[1000][16*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c0.l17", $signed(dut.u_wide_spm.mem[1000][17*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c0.l18", $signed(dut.u_wide_spm.mem[1000][18*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c0.l19", $signed(dut.u_wide_spm.mem[1000][19*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c0.l20", $signed(dut.u_wide_spm.mem[1000][20*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c0.l21", $signed(dut.u_wide_spm.mem[1000][21*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c0.l22", $signed(dut.u_wide_spm.mem[1000][22*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l23", $signed(dut.u_wide_spm.mem[1000][23*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c0.l24", $signed(dut.u_wide_spm.mem[1000][24*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c0.l25", $signed(dut.u_wide_spm.mem[1000][25*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l26", $signed(dut.u_wide_spm.mem[1000][26*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c0.l27", $signed(dut.u_wide_spm.mem[1000][27*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c0.l28", $signed(dut.u_wide_spm.mem[1000][28*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l29", $signed(dut.u_wide_spm.mem[1000][29*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c0.l30", $signed(dut.u_wide_spm.mem[1000][30*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c0.l31", $signed(dut.u_wide_spm.mem[1000][31*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.sign.c0", dut.u_bit_spm_a.mem[2000], 32'h081c1277);
+    check("A.X.c1.l0", $signed(dut.u_wide_spm.mem[1001][0*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c1.l1", $signed(dut.u_wide_spm.mem[1001][1*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c1.l2", $signed(dut.u_wide_spm.mem[1001][2*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c1.l3", $signed(dut.u_wide_spm.mem[1001][3*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c1.l4", $signed(dut.u_wide_spm.mem[1001][4*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c1.l5", $signed(dut.u_wide_spm.mem[1001][5*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c1.l6", $signed(dut.u_wide_spm.mem[1001][6*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c1.l7", $signed(dut.u_wide_spm.mem[1001][7*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c1.l8", $signed(dut.u_wide_spm.mem[1001][8*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c1.l9", $signed(dut.u_wide_spm.mem[1001][9*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c1.l10", $signed(dut.u_wide_spm.mem[1001][10*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l11", $signed(dut.u_wide_spm.mem[1001][11*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l12", $signed(dut.u_wide_spm.mem[1001][12*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c1.l13", $signed(dut.u_wide_spm.mem[1001][13*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c1.l14", $signed(dut.u_wide_spm.mem[1001][14*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c1.l15", $signed(dut.u_wide_spm.mem[1001][15*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c1.l16", $signed(dut.u_wide_spm.mem[1001][16*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l17", $signed(dut.u_wide_spm.mem[1001][17*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c1.l18", $signed(dut.u_wide_spm.mem[1001][18*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c1.l19", $signed(dut.u_wide_spm.mem[1001][19*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c1.l20", $signed(dut.u_wide_spm.mem[1001][20*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c1.l21", $signed(dut.u_wide_spm.mem[1001][21*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c1.l22", $signed(dut.u_wide_spm.mem[1001][22*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c1.l23", $signed(dut.u_wide_spm.mem[1001][23*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l24", $signed(dut.u_wide_spm.mem[1001][24*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c1.l25", $signed(dut.u_wide_spm.mem[1001][25*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c1.l26", $signed(dut.u_wide_spm.mem[1001][26*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c1.l27", $signed(dut.u_wide_spm.mem[1001][27*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l28", $signed(dut.u_wide_spm.mem[1001][28*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c1.l29", $signed(dut.u_wide_spm.mem[1001][29*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c1.l30", $signed(dut.u_wide_spm.mem[1001][30*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c1.l31", $signed(dut.u_wide_spm.mem[1001][31*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.sign.c1", dut.u_bit_spm_a.mem[2001], 32'he536418e);
+    check("A.X.c2.l0", $signed(dut.u_wide_spm.mem[1002][0*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c2.l1", $signed(dut.u_wide_spm.mem[1002][1*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c2.l2", $signed(dut.u_wide_spm.mem[1002][2*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l3", $signed(dut.u_wide_spm.mem[1002][3*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c2.l4", $signed(dut.u_wide_spm.mem[1002][4*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c2.l5", $signed(dut.u_wide_spm.mem[1002][5*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c2.l6", $signed(dut.u_wide_spm.mem[1002][6*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c2.l7", $signed(dut.u_wide_spm.mem[1002][7*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l8", $signed(dut.u_wide_spm.mem[1002][8*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c2.l9", $signed(dut.u_wide_spm.mem[1002][9*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c2.l10", $signed(dut.u_wide_spm.mem[1002][10*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c2.l11", $signed(dut.u_wide_spm.mem[1002][11*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c2.l12", $signed(dut.u_wide_spm.mem[1002][12*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c2.l13", $signed(dut.u_wide_spm.mem[1002][13*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l14", $signed(dut.u_wide_spm.mem[1002][14*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c2.l15", $signed(dut.u_wide_spm.mem[1002][15*NOV_ACC_W +: NOV_ACC_W]), 6);
+    check("A.X.c2.l16", $signed(dut.u_wide_spm.mem[1002][16*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c2.l17", $signed(dut.u_wide_spm.mem[1002][17*NOV_ACC_W +: NOV_ACC_W]), 8);
+    check("A.X.c2.l18", $signed(dut.u_wide_spm.mem[1002][18*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c2.l19", $signed(dut.u_wide_spm.mem[1002][19*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l20", $signed(dut.u_wide_spm.mem[1002][20*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c2.l21", $signed(dut.u_wide_spm.mem[1002][21*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c2.l22", $signed(dut.u_wide_spm.mem[1002][22*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l23", $signed(dut.u_wide_spm.mem[1002][23*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("A.X.c2.l24", $signed(dut.u_wide_spm.mem[1002][24*NOV_ACC_W +: NOV_ACC_W]), -8);
+    check("A.X.c2.l25", $signed(dut.u_wide_spm.mem[1002][25*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("A.X.c2.l26", $signed(dut.u_wide_spm.mem[1002][26*NOV_ACC_W +: NOV_ACC_W]), -6);
+    check("A.X.c2.l27", $signed(dut.u_wide_spm.mem[1002][27*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l28", $signed(dut.u_wide_spm.mem[1002][28*NOV_ACC_W +: NOV_ACC_W]), -4);
+    check("A.X.c2.l29", $signed(dut.u_wide_spm.mem[1002][29*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.X.c2.l30", $signed(dut.u_wide_spm.mem[1002][30*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("A.X.c2.l31", $signed(dut.u_wide_spm.mem[1002][31*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("A.sign.c2", dut.u_bit_spm_a.mem[2002], 32'h15b40752);
+
+    // ===== TEST B: multi-chunk multi-class argmax dot-search (with tie) =====
+    csr_hvsize = 64;
+    dut.u_bit_spm_a.mem[3000] = 32'h80ca17b7;
+    dut.u_bit_spm_a.mem[3001] = 32'h7c9bbfae;
+    dut.u_wide_spm.mem[4000] = repack32(1024'h0000002a0000018dffffffdcfffffed8000001c7000000abffffff0bffffff1cffffff7700000172fffffff8ffffff41000000a0fffffe4c0000004500000158ffffff20fffffe3b0000005c0000001bfffffe67000000bf00000073fffffe52ffffffe9000001b200000036000000b7fffffe4effffff0b000001e800000191);
+    dut.u_wide_spm.mem[4001] = repack32(1024'hffffff44000000bafffffe9c0000002a000001dffffffe7d00000121ffffff6e000001cbfffffe27fffffe9ffffffee800000046fffffe59fffffeb30000000800000065fffffe5afffffe43fffffeb7ffffff8e000000adfffffff0000000e3fffffe9fffffff61fffffe11fffffe5400000014000001d0fffffe1f000000b5);
+    dut.u_wide_spm.mem[4002] = repack32(1024'hffffffee000001c70000012dfffffe3afffffff3ffffffeb0000015000000060ffffff6900000007ffffff710000011affffff970000004cfffffe36ffffffe70000016100000129fffffeaa0000016f000001ddffffff3ffffffeaaffffff22fffffec1fffffe3500000145000000b2ffffff27ffffffb6fffffe34ffffffdd);
+    dut.u_wide_spm.mem[4003] = repack32(1024'h0000009cffffff11000000ac0000015000000151ffffff8dfffffffc000001680000015dfffffe750000002a000001cdfffffe860000011fffffffcaffffffb6fffffeca00000128fffffe8affffff25ffffff3affffffcc0000014e0000001f0000012b000000fbffffffcefffffeba000001920000006d0000015000000187);
+    dut.u_wide_spm.mem[4004] = repack32(1024'hfffffeecfffffe3200000142ffffff31000001a0fffffe3cfffffee7ffffffa0fffffe5cfffffe54000000edffffffd50000013100000138ffffff57000000ed0000016800000170fffffeaa000001efffffff1f000001d1000001ad0000005efffffeac000001e600000149000000d8000000dbfffffe7affffff6dfffffed0);
+    dut.u_wide_spm.mem[4005] = repack32(1024'hffffff7d0000013c00000152fffffefd0000000cffffffe20000019800000197000000ddfffffed3ffffffa2fffffe73fffffeda000001d8ffffffc0000000cdfffffe5600000179ffffff1300000063fffffe4fffffffe3000001d3ffffff44ffffff50000000d8000001cd000001c700000137fffffe650000015d00000012);
+    dut.u_wide_spm.mem[4006] = repack32(1024'hfffffeecfffffe3200000142ffffff31000001a0fffffe3cfffffee7ffffffa0fffffe5cfffffe54000000edffffffd50000013100000138ffffff57000000ed0000016800000170fffffeaa000001efffffff1f000001d1000001ad0000005efffffeac000001e600000149000000d8000000dbfffffe7affffff6dfffffed0);
+    dut.u_wide_spm.mem[4007] = repack32(1024'hffffff7d0000013c00000152fffffefd0000000cffffffe20000019800000197000000ddfffffed3ffffffa2fffffe73fffffeda000001d8ffffffc0000000cdfffffe5600000179ffffff1300000063fffffe4fffffffe3000001d3ffffff44ffffff50000000d8000001cd000001c700000137fffffe650000015d00000012);
+    issue(NOV_DOTSEARCH, 13'd0, 13'd3000, 13'd4000, 4'sd0, 16'd4, 1'b0);
+    @(posedge clk);
+    check("B.argmax_idx", dut.u_dsrch.best_idx_r, 2);
+    check("B.best_dot", dut.u_dsrch.best_dot_r, 2982);
+
+    // ===== TEST C: multi-chunk perceptron update, non-zero start =====
+    csr_hvsize = 64;
+    dut.u_bit_spm_a.mem[5000] = 32'ha1c09da3;
+    dut.u_bit_spm_a.mem[5001] = 32'hebcb1200;
+    dut.u_wide_spm.mem[6000] = repack32(1024'hffffffc60000001900000062ffffffd70000000cfffffff5ffffffa9000000010000003200000053ffffffe8ffffffd2ffffffe2fffffffc0000004fffffffb900000022ffffffe20000002c0000000200000005ffffffe3ffffffde0000005fffffffb300000024ffffffc20000002f0000004bffffffed00000008ffffffe9);
+    dut.u_wide_spm.mem[6001] = repack32(1024'h0000001300000055ffffffa3000000440000001500000047000000110000002d00000020ffffffc7ffffffd0fffffff40000003500000043fffffffa00000033ffffffe4ffffffc4000000160000003c00000002ffffffcb000000160000004a00000009ffffffe80000000100000016ffffffaeffffff9cffffffeafffffffd);
+    issue(NOV_PROTO_UPDATE, 13'd6000, 13'd5000, 13'd0, 4'sd1, 16'd0, 1'b0);
+    @(posedge clk);
+    check("C.proto0.c0.l0", $signed(dut.u_wide_spm.mem[6000][0*NOV_ACC_W +: NOV_ACC_W]), -24);
+    check("C.proto0.c0.l1", $signed(dut.u_wide_spm.mem[6000][1*NOV_ACC_W +: NOV_ACC_W]), 7);
+    check("C.proto0.c0.l2", $signed(dut.u_wide_spm.mem[6000][2*NOV_ACC_W +: NOV_ACC_W]), -18);
+    check("C.proto0.c0.l3", $signed(dut.u_wide_spm.mem[6000][3*NOV_ACC_W +: NOV_ACC_W]), 76);
+    check("C.proto0.c0.l4", $signed(dut.u_wide_spm.mem[6000][4*NOV_ACC_W +: NOV_ACC_W]), 48);
+    check("C.proto0.c0.l5", $signed(dut.u_wide_spm.mem[6000][5*NOV_ACC_W +: NOV_ACC_W]), -63);
+    check("C.proto0.c0.l6", $signed(dut.u_wide_spm.mem[6000][6*NOV_ACC_W +: NOV_ACC_W]), 37);
+    check("C.proto0.c0.l7", $signed(dut.u_wide_spm.mem[6000][7*NOV_ACC_W +: NOV_ACC_W]), -78);
+    check("C.proto0.c0.l8", $signed(dut.u_wide_spm.mem[6000][8*NOV_ACC_W +: NOV_ACC_W]), 94);
+    check("C.proto0.c0.l9", $signed(dut.u_wide_spm.mem[6000][9*NOV_ACC_W +: NOV_ACC_W]), -33);
+    check("C.proto0.c0.l10", $signed(dut.u_wide_spm.mem[6000][10*NOV_ACC_W +: NOV_ACC_W]), -30);
+    check("C.proto0.c0.l11", $signed(dut.u_wide_spm.mem[6000][11*NOV_ACC_W +: NOV_ACC_W]), 4);
+    check("C.proto0.c0.l12", $signed(dut.u_wide_spm.mem[6000][12*NOV_ACC_W +: NOV_ACC_W]), 1);
+    check("C.proto0.c0.l13", $signed(dut.u_wide_spm.mem[6000][13*NOV_ACC_W +: NOV_ACC_W]), 45);
+    check("C.proto0.c0.l14", $signed(dut.u_wide_spm.mem[6000][14*NOV_ACC_W +: NOV_ACC_W]), -29);
+    check("C.proto0.c0.l15", $signed(dut.u_wide_spm.mem[6000][15*NOV_ACC_W +: NOV_ACC_W]), 33);
+    check("C.proto0.c0.l16", $signed(dut.u_wide_spm.mem[6000][16*NOV_ACC_W +: NOV_ACC_W]), -70);
+    check("C.proto0.c0.l17", $signed(dut.u_wide_spm.mem[6000][17*NOV_ACC_W +: NOV_ACC_W]), 80);
+    check("C.proto0.c0.l18", $signed(dut.u_wide_spm.mem[6000][18*NOV_ACC_W +: NOV_ACC_W]), -3);
+    check("C.proto0.c0.l19", $signed(dut.u_wide_spm.mem[6000][19*NOV_ACC_W +: NOV_ACC_W]), -29);
+    check("C.proto0.c0.l20", $signed(dut.u_wide_spm.mem[6000][20*NOV_ACC_W +: NOV_ACC_W]), -45);
+    check("C.proto0.c0.l21", $signed(dut.u_wide_spm.mem[6000][21*NOV_ACC_W +: NOV_ACC_W]), -23);
+    check("C.proto0.c0.l22", $signed(dut.u_wide_spm.mem[6000][22*NOV_ACC_W +: NOV_ACC_W]), 82);
+    check("C.proto0.c0.l23", $signed(dut.u_wide_spm.mem[6000][23*NOV_ACC_W +: NOV_ACC_W]), 49);
+    check("C.proto0.c0.l24", $signed(dut.u_wide_spm.mem[6000][24*NOV_ACC_W +: NOV_ACC_W]), 0);
+    check("C.proto0.c0.l25", $signed(dut.u_wide_spm.mem[6000][25*NOV_ACC_W +: NOV_ACC_W]), -86);
+    check("C.proto0.c0.l26", $signed(dut.u_wide_spm.mem[6000][26*NOV_ACC_W +: NOV_ACC_W]), -10);
+    check("C.proto0.c0.l27", $signed(dut.u_wide_spm.mem[6000][27*NOV_ACC_W +: NOV_ACC_W]), 13);
+    check("C.proto0.c0.l28", $signed(dut.u_wide_spm.mem[6000][28*NOV_ACC_W +: NOV_ACC_W]), -40);
+    check("C.proto0.c0.l29", $signed(dut.u_wide_spm.mem[6000][29*NOV_ACC_W +: NOV_ACC_W]), 97);
+    check("C.proto0.c0.l30", $signed(dut.u_wide_spm.mem[6000][30*NOV_ACC_W +: NOV_ACC_W]), 26);
+    check("C.proto0.c0.l31", $signed(dut.u_wide_spm.mem[6000][31*NOV_ACC_W +: NOV_ACC_W]), -59);
+    check("C.proto0.c1.l0", $signed(dut.u_wide_spm.mem[6001][0*NOV_ACC_W +: NOV_ACC_W]), -2);
+    check("C.proto0.c1.l1", $signed(dut.u_wide_spm.mem[6001][1*NOV_ACC_W +: NOV_ACC_W]), -21);
+    check("C.proto0.c1.l2", $signed(dut.u_wide_spm.mem[6001][2*NOV_ACC_W +: NOV_ACC_W]), -99);
+    check("C.proto0.c1.l3", $signed(dut.u_wide_spm.mem[6001][3*NOV_ACC_W +: NOV_ACC_W]), -81);
+    check("C.proto0.c1.l4", $signed(dut.u_wide_spm.mem[6001][4*NOV_ACC_W +: NOV_ACC_W]), 23);
+    check("C.proto0.c1.l5", $signed(dut.u_wide_spm.mem[6001][5*NOV_ACC_W +: NOV_ACC_W]), 2);
+    check("C.proto0.c1.l6", $signed(dut.u_wide_spm.mem[6001][6*NOV_ACC_W +: NOV_ACC_W]), -23);
+    check("C.proto0.c1.l7", $signed(dut.u_wide_spm.mem[6001][7*NOV_ACC_W +: NOV_ACC_W]), 10);
+    check("C.proto0.c1.l8", $signed(dut.u_wide_spm.mem[6001][8*NOV_ACC_W +: NOV_ACC_W]), 75);
+    check("C.proto0.c1.l9", $signed(dut.u_wide_spm.mem[6001][9*NOV_ACC_W +: NOV_ACC_W]), 21);
+    check("C.proto0.c1.l10", $signed(dut.u_wide_spm.mem[6001][10*NOV_ACC_W +: NOV_ACC_W]), -52);
+    check("C.proto0.c1.l11", $signed(dut.u_wide_spm.mem[6001][11*NOV_ACC_W +: NOV_ACC_W]), 3);
+    check("C.proto0.c1.l12", $signed(dut.u_wide_spm.mem[6001][12*NOV_ACC_W +: NOV_ACC_W]), 59);
+    check("C.proto0.c1.l13", $signed(dut.u_wide_spm.mem[6001][13*NOV_ACC_W +: NOV_ACC_W]), 23);
+    check("C.proto0.c1.l14", $signed(dut.u_wide_spm.mem[6001][14*NOV_ACC_W +: NOV_ACC_W]), -59);
+    check("C.proto0.c1.l15", $signed(dut.u_wide_spm.mem[6001][15*NOV_ACC_W +: NOV_ACC_W]), -27);
+    check("C.proto0.c1.l16", $signed(dut.u_wide_spm.mem[6001][16*NOV_ACC_W +: NOV_ACC_W]), 50);
+    check("C.proto0.c1.l17", $signed(dut.u_wide_spm.mem[6001][17*NOV_ACC_W +: NOV_ACC_W]), -7);
+    check("C.proto0.c1.l18", $signed(dut.u_wide_spm.mem[6001][18*NOV_ACC_W +: NOV_ACC_W]), 68);
+    check("C.proto0.c1.l19", $signed(dut.u_wide_spm.mem[6001][19*NOV_ACC_W +: NOV_ACC_W]), 52);
+    check("C.proto0.c1.l20", $signed(dut.u_wide_spm.mem[6001][20*NOV_ACC_W +: NOV_ACC_W]), -11);
+    check("C.proto0.c1.l21", $signed(dut.u_wide_spm.mem[6001][21*NOV_ACC_W +: NOV_ACC_W]), -47);
+    check("C.proto0.c1.l22", $signed(dut.u_wide_spm.mem[6001][22*NOV_ACC_W +: NOV_ACC_W]), -58);
+    check("C.proto0.c1.l23", $signed(dut.u_wide_spm.mem[6001][23*NOV_ACC_W +: NOV_ACC_W]), 31);
+    check("C.proto0.c1.l24", $signed(dut.u_wide_spm.mem[6001][24*NOV_ACC_W +: NOV_ACC_W]), 44);
+    check("C.proto0.c1.l25", $signed(dut.u_wide_spm.mem[6001][25*NOV_ACC_W +: NOV_ACC_W]), 16);
+    check("C.proto0.c1.l26", $signed(dut.u_wide_spm.mem[6001][26*NOV_ACC_W +: NOV_ACC_W]), 72);
+    check("C.proto0.c1.l27", $signed(dut.u_wide_spm.mem[6001][27*NOV_ACC_W +: NOV_ACC_W]), 20);
+    check("C.proto0.c1.l28", $signed(dut.u_wide_spm.mem[6001][28*NOV_ACC_W +: NOV_ACC_W]), 69);
+    check("C.proto0.c1.l29", $signed(dut.u_wide_spm.mem[6001][29*NOV_ACC_W +: NOV_ACC_W]), -94);
+    check("C.proto0.c1.l30", $signed(dut.u_wide_spm.mem[6001][30*NOV_ACC_W +: NOV_ACC_W]), 84);
+    check("C.proto0.c1.l31", $signed(dut.u_wide_spm.mem[6001][31*NOV_ACC_W +: NOV_ACC_W]), 18);
+
+    $display("\n===== SCOREBOARD: %0d / %0d checks passed =====", pass_count, total_count);
+    if (pass_count == total_count) $display("ALL PASS"); else $display("*** SOME CHECKS FAILED ***");
+    $finish;
+  end
+endmodule

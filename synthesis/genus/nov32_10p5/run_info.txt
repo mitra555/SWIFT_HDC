@@ -1,0 +1,4 @@
+TOP=nov_top
+LANE=32
+CLK_NS=10.5
+VCD=<repo>/hw/synth/vcd/nov32.vcd

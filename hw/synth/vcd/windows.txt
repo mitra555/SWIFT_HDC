@@ -1,0 +1,7 @@
+# VCD window length in ns (10 ns clock) -- collect_metrics.py uses it for energy = power x time
+# file          ns         cycles   window
+nov16.vcd    1758680    # 175868  novelty core busy, 16-bit lanes (encode incl. 4 BINDGEN, sign, 2 updates, search, normalize)
+nov32.vcd    3366520    # 336652  same work, 32-bit lanes (normalize divider runs 63 instead of 31 iterations)
+base16.vcd    142100    #  14210  baseline core busy (3 perm, 16 x perm+bind+bundle, clip, sim, search at 2048 bits)
+busy16.vcd   1910320    # 191032  either HDC core or copy engine busy, 16-bit lanes (SoC)
+busy32.vcd   3518160    # 351816  either HDC core or copy engine busy, 32-bit lanes (SoC)

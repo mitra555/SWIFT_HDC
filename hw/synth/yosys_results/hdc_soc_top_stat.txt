@@ -1,0 +1,33 @@
+   Number of cells:               67895
+     $_ANDNOT_                       1631
+     $_AND_                         15457
+     $_DFFE_PN0P_                     788
+     $_DFFE_PN1P_                      14
+     $_DFFE_PN_                         4
+     $_DFFE_PP_                      3611
+     $_DFF_PN0_                        19
+     $_DFF_PN1_                        10
+     $_DFF_P_                         155
+     $_MUX_                          4071
+     $_NAND_                        20865
+     $_NOR_                          1218
+     $_NOT_                           540
+     $_ORNOT_                        1231
+     $_OR_                           8397
+     $_SDFFCE_PN0P_                    35
+     $_SDFFCE_PP0P_                   197
+     $_SDFFCE_PP1P_                     9
+     $_SDFFE_PN0P_                     92
+     $_SDFFE_PN1P_                      4
+     $_SDFFE_PP0P_                      1
+     $_SDFFE_PP1P_                      3
+     $_SDFF_PN0_                        4
+     $_SDFF_PP0_                        2
+     $_XNOR_                         4657
+     $_XOR_                          4840
+     sky130_sram_1kbyte_1rw1r_32x256_8       4
+     sky130_sram_2kbyte_1rw1r_32x512_8       2
+     sky130_sram_4kbyte_1rw1r_32x1024_8      32
+     sky130_sram_soc_mem_1rw            2
+
+Yosys 0.69+187 (git sha1 2f08661dd); SystemVerilog via slang frontend; synth -flatten; memories as sky130 macro black boxes

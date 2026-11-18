@@ -1,0 +1,7 @@
+BINDGEN feature 16b: 898.8 nJ (SRAM 72%)
+BINDGEN feature 32b: 1565.8 nJ -> 16b saves 43%
+table + copy engine: 1096.3 nJ -> BINDGEN saves 18%
+table + CPU copies (lower bound): 3801.1 nJ -> 4.2x BINDGEN
+logic BINDGEN vs BINDMAC: -0.4%
+clip core energy: 911 uJ; encode share 99.6%; 2 updates 1.79 uJ = 0.20% of inference
+PicoRV32 software clip lower bound: 72.9 mJ -> 80x SWIFT

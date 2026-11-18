@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+# Local simulation outputs (the committed activity files are .vcd.gz)
+*.vcd
+*.fst
+*.vvp
+obj_dir/
+# LaTeX build files
+paper/*.aux
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+# Local datasets and caches
+eval/work/

@@ -1,0 +1,802 @@
+[
+ {
+  "D": 512,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.5888888888888889,
+   "F_binary_protos_hamming": 0.6,
+   "G_baseline_hdcu": 0.36666666666666664,
+   "H_baseline_unbounded": 0.45555555555555555
+  }
+ },
+ {
+  "D": 512,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.6277777777777778,
+   "F_binary_protos_hamming": 0.5277777777777778,
+   "G_baseline_hdcu": 0.39444444444444443,
+   "H_baseline_unbounded": 0.5388888888888889
+  }
+ },
+ {
+  "D": 512,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.6055555555555555,
+   "F_binary_protos_hamming": 0.5055555555555555,
+   "G_baseline_hdcu": 0.37222222222222223,
+   "H_baseline_unbounded": 0.5388888888888889
+  }
+ },
+ {
+  "D": 512,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.6111111111111112,
+   "F_binary_protos_hamming": 0.5277777777777778,
+   "G_baseline_hdcu": 0.43333333333333335,
+   "H_baseline_unbounded": 0.5444444444444444
+  }
+ },
+ {
+  "D": 512,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.5833333333333334,
+   "F_binary_protos_hamming": 0.5388888888888889,
+   "G_baseline_hdcu": 0.4166666666666667,
+   "H_baseline_unbounded": 0.5111111111111111
+  }
+ },
+ {
+  "D": 512,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.6166666666666667,
+   "F_binary_protos_hamming": 0.4777777777777778,
+   "G_baseline_hdcu": 0.36666666666666664,
+   "H_baseline_unbounded": 0.55
+  }
+ },
+ {
+  "D": 512,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.5888888888888889,
+   "F_binary_protos_hamming": 0.5388888888888889,
+   "G_baseline_hdcu": 0.39444444444444443,
+   "H_baseline_unbounded": 0.5277777777777778
+  }
+ },
+ {
+  "D": 512,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.6333333333333333,
+   "F_binary_protos_hamming": 0.5888888888888889,
+   "G_baseline_hdcu": 0.3611111111111111,
+   "H_baseline_unbounded": 0.5166666666666667
+  }
+ },
+ {
+  "D": 512,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.6,
+   "F_binary_protos_hamming": 0.49444444444444446,
+   "G_baseline_hdcu": 0.3388888888888889,
+   "H_baseline_unbounded": 0.5944444444444444
+  }
+ },
+ {
+  "D": 512,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.6666666666666666,
+   "F_binary_protos_hamming": 0.5555555555555556,
+   "G_baseline_hdcu": 0.4222222222222222,
+   "H_baseline_unbounded": 0.55
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.6277777777777778,
+   "F_binary_protos_hamming": 0.6055555555555555,
+   "G_baseline_hdcu": 0.37222222222222223,
+   "H_baseline_unbounded": 0.55
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.6722222222222223,
+   "F_binary_protos_hamming": 0.5777777777777777,
+   "G_baseline_hdcu": 0.45555555555555555,
+   "H_baseline_unbounded": 0.5833333333333334
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.6944444444444444,
+   "F_binary_protos_hamming": 0.5888888888888889,
+   "G_baseline_hdcu": 0.42777777777777776,
+   "H_baseline_unbounded": 0.5944444444444444
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.7055555555555556,
+   "F_binary_protos_hamming": 0.6333333333333333,
+   "G_baseline_hdcu": 0.5166666666666667,
+   "H_baseline_unbounded": 0.6333333333333333
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.6388888888888888,
+   "F_binary_protos_hamming": 0.6,
+   "G_baseline_hdcu": 0.4888888888888889,
+   "H_baseline_unbounded": 0.5611111111111111
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.6611111111111111,
+   "F_binary_protos_hamming": 0.5888888888888889,
+   "G_baseline_hdcu": 0.4166666666666667,
+   "H_baseline_unbounded": 0.6055555555555555
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6166666666666667,
+   "G_baseline_hdcu": 0.45,
+   "H_baseline_unbounded": 0.5277777777777778
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.6666666666666666,
+   "F_binary_protos_hamming": 0.6055555555555555,
+   "G_baseline_hdcu": 0.45555555555555555,
+   "H_baseline_unbounded": 0.5388888888888889
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.6777777777777778,
+   "F_binary_protos_hamming": 0.5722222222222222,
+   "G_baseline_hdcu": 0.42777777777777776,
+   "H_baseline_unbounded": 0.5555555555555556
+  }
+ },
+ {
+  "D": 1024,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.65,
+   "F_binary_protos_hamming": 0.5166666666666667,
+   "G_baseline_hdcu": 0.43333333333333335,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7444444444444445,
+   "F_binary_protos_hamming": 0.6444444444444445,
+   "G_baseline_hdcu": 0.4888888888888889,
+   "H_baseline_unbounded": 0.5888888888888889
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.6555555555555556,
+   "G_baseline_hdcu": 0.5166666666666667,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6222222222222222,
+   "G_baseline_hdcu": 0.5055555555555555,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.65,
+   "F_binary_protos_hamming": 0.65,
+   "G_baseline_hdcu": 0.4722222222222222,
+   "H_baseline_unbounded": 0.5833333333333334
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.6888888888888889,
+   "F_binary_protos_hamming": 0.6166666666666667,
+   "G_baseline_hdcu": 0.3888888888888889,
+   "H_baseline_unbounded": 0.6055555555555555
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7222222222222222,
+   "F_binary_protos_hamming": 0.6666666666666666,
+   "G_baseline_hdcu": 0.4388888888888889,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.6888888888888889,
+   "F_binary_protos_hamming": 0.6166666666666667,
+   "G_baseline_hdcu": 0.4111111111111111,
+   "H_baseline_unbounded": 0.5944444444444444
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7166666666666667,
+   "F_binary_protos_hamming": 0.6555555555555556,
+   "G_baseline_hdcu": 0.5277777777777778,
+   "H_baseline_unbounded": 0.6055555555555555
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7111111111111111,
+   "F_binary_protos_hamming": 0.6166666666666667,
+   "G_baseline_hdcu": 0.5166666666666667,
+   "H_baseline_unbounded": 0.7
+  }
+ },
+ {
+  "D": 2048,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6277777777777778,
+   "G_baseline_hdcu": 0.4777777777777778,
+   "H_baseline_unbounded": 0.5888888888888889
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7444444444444445,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.5777777777777777
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.7666666666666667,
+   "F_binary_protos_hamming": 0.7055555555555556,
+   "G_baseline_hdcu": 0.5111111111111111,
+   "H_baseline_unbounded": 0.5833333333333334
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5222222222222223,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6833333333333333,
+   "G_baseline_hdcu": 0.48333333333333334,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.7277777777777777,
+   "F_binary_protos_hamming": 0.6555555555555556,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.5944444444444444
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7388888888888889,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5222222222222223,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.7777777777777778,
+   "F_binary_protos_hamming": 0.6444444444444445,
+   "G_baseline_hdcu": 0.49444444444444446,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7666666666666667,
+   "F_binary_protos_hamming": 0.6944444444444444,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7444444444444445,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5166666666666667,
+   "H_baseline_unbounded": 0.6111111111111112
+  }
+ },
+ {
+  "D": 3072,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.7222222222222222,
+   "F_binary_protos_hamming": 0.6833333333333333,
+   "G_baseline_hdcu": 0.4666666666666667,
+   "H_baseline_unbounded": 0.6111111111111112
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7111111111111111,
+   "F_binary_protos_hamming": 0.6833333333333333,
+   "G_baseline_hdcu": 0.5444444444444444,
+   "H_baseline_unbounded": 0.6777777777777778
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.7555555555555555,
+   "F_binary_protos_hamming": 0.6611111111111111,
+   "G_baseline_hdcu": 0.48333333333333334,
+   "H_baseline_unbounded": 0.6777777777777778
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.7833333333333333,
+   "F_binary_protos_hamming": 0.6888888888888889,
+   "G_baseline_hdcu": 0.5166666666666667,
+   "H_baseline_unbounded": 0.6611111111111111
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.7833333333333333,
+   "F_binary_protos_hamming": 0.7444444444444445,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6388888888888888,
+   "G_baseline_hdcu": 0.5,
+   "H_baseline_unbounded": 0.5888888888888889
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7222222222222222,
+   "F_binary_protos_hamming": 0.7222222222222222,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.7611111111111111,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.55,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7388888888888889,
+   "F_binary_protos_hamming": 0.7,
+   "G_baseline_hdcu": 0.5444444444444444,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6555555555555556,
+   "G_baseline_hdcu": 0.4722222222222222,
+   "H_baseline_unbounded": 0.6333333333333333
+  }
+ },
+ {
+  "D": 4096,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.7,
+   "F_binary_protos_hamming": 0.6444444444444445,
+   "G_baseline_hdcu": 0.5444444444444444,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7111111111111111,
+   "F_binary_protos_hamming": 0.6388888888888888,
+   "G_baseline_hdcu": 0.5777777777777777,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.7833333333333333,
+   "F_binary_protos_hamming": 0.7055555555555556,
+   "G_baseline_hdcu": 0.5444444444444444,
+   "H_baseline_unbounded": 0.6388888888888888
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.7444444444444445,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.4722222222222222,
+   "H_baseline_unbounded": 0.6722222222222223
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.7277777777777777,
+   "G_baseline_hdcu": 0.6111111111111112,
+   "H_baseline_unbounded": 0.6
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.6722222222222223,
+   "F_binary_protos_hamming": 0.6611111111111111,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7777777777777778,
+   "F_binary_protos_hamming": 0.6888888888888889,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.6833333333333333
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.7444444444444445,
+   "F_binary_protos_hamming": 0.6777777777777778,
+   "G_baseline_hdcu": 0.5,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7611111111111111,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.5222222222222223,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7333333333333333,
+   "F_binary_protos_hamming": 0.6611111111111111,
+   "G_baseline_hdcu": 0.5222222222222223,
+   "H_baseline_unbounded": 0.6555555555555556
+  }
+ },
+ {
+  "D": 5024,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.7555555555555555,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7666666666666667,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.5611111111111111,
+   "H_baseline_unbounded": 0.5944444444444444
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.6277777777777778
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.7388888888888889,
+   "F_binary_protos_hamming": 0.6555555555555556,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.6333333333333333
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.7333333333333333,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5722222222222222,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.7388888888888889,
+   "F_binary_protos_hamming": 0.7277777777777777,
+   "G_baseline_hdcu": 0.5277777777777778,
+   "H_baseline_unbounded": 0.6333333333333333
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7777777777777778,
+   "F_binary_protos_hamming": 0.7277777777777777,
+   "G_baseline_hdcu": 0.5277777777777778,
+   "H_baseline_unbounded": 0.6666666666666666
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.7333333333333333,
+   "F_binary_protos_hamming": 0.6611111111111111,
+   "G_baseline_hdcu": 0.5777777777777777,
+   "H_baseline_unbounded": 0.6611111111111111
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7666666666666667,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.5277777777777778,
+   "H_baseline_unbounded": 0.6444444444444445
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7555555555555555,
+   "F_binary_protos_hamming": 0.7388888888888889,
+   "G_baseline_hdcu": 0.5,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 6144,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.7388888888888889,
+   "F_binary_protos_hamming": 0.7166666666666667,
+   "G_baseline_hdcu": 0.5333333333333333,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 0,
+  "acc": {
+   "E_hw_16bit": 0.7888888888888889,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.5555555555555556,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 1,
+  "acc": {
+   "E_hw_16bit": 0.8055555555555556,
+   "F_binary_protos_hamming": 0.7722222222222223,
+   "G_baseline_hdcu": 0.5944444444444444,
+   "H_baseline_unbounded": 0.6555555555555556
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 2,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.7166666666666667,
+   "G_baseline_hdcu": 0.5944444444444444,
+   "H_baseline_unbounded": 0.6888888888888889
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 3,
+  "acc": {
+   "E_hw_16bit": 0.65,
+   "F_binary_protos_hamming": 0.6388888888888888,
+   "G_baseline_hdcu": 0.5611111111111111,
+   "H_baseline_unbounded": 0.65
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 4,
+  "acc": {
+   "E_hw_16bit": 0.7555555555555555,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.55,
+   "H_baseline_unbounded": 0.6222222222222222
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 5,
+  "acc": {
+   "E_hw_16bit": 0.7888888888888889,
+   "F_binary_protos_hamming": 0.7333333333333333,
+   "G_baseline_hdcu": 0.5833333333333334,
+   "H_baseline_unbounded": 0.6833333333333333
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 6,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.7111111111111111,
+   "G_baseline_hdcu": 0.5722222222222222,
+   "H_baseline_unbounded": 0.6388888888888888
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 7,
+  "acc": {
+   "E_hw_16bit": 0.7333333333333333,
+   "F_binary_protos_hamming": 0.6888888888888889,
+   "G_baseline_hdcu": 0.5388888888888889,
+   "H_baseline_unbounded": 0.6166666666666667
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 8,
+  "acc": {
+   "E_hw_16bit": 0.7611111111111111,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5444444444444444,
+   "H_baseline_unbounded": 0.6333333333333333
+  }
+ },
+ {
+  "D": 8192,
+  "seed": 9,
+  "acc": {
+   "E_hw_16bit": 0.75,
+   "F_binary_protos_hamming": 0.6722222222222223,
+   "G_baseline_hdcu": 0.5944444444444444,
+   "H_baseline_unbounded": 0.6
+  }
+ }
+]

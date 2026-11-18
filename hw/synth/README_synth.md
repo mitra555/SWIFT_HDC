@@ -1,0 +1,106 @@
+# Synthesis
+
+## Flow (one command)
+
+```
+cd <package root>
+PDK_ROOT=/path/to/sky130A nohup ./synth/run_genus_all.sh > synth/genus_all.log 2>&1 &
+```
+`PDK_ROOT` defaults to `/path/to/sky130A` (the path in your earlier power
+script). The script runs, one after another:
+
+| Run | Top | Lanes | Clock | Power from |
+|---|---|---|---|---|
+| `hdcu_10p0` | `hdcu_top` | – | 10.0 ns | VCD, baseline core busy |
+| `nov16_10p0`, `nov16_10p5` | `nov_top` | 16 (paper) | 10.0 / 10.5 ns | VCD, novelty core busy |
+| `nov32_10p0`, `nov32_10p5` | `nov_top` | 32 (int32 comparison) | 10.0 / 10.5 ns | VCD, novelty core busy |
+| `soc16_10p0`, `soc32_10p0` | `hdc_soc_top` | 16 / 32 | 10.0 ns | VCD, either HDC core busy |
+| `vfe_10p0` | `video_frontend_top` | – | 10.0 ns | vectorless (no VCD) |
+
+Each run writes `synth/out/<run>/` (area, gates, timing, power, qor, unresolved reports,
+netlist, SDC, Genus log); at the end `synth/collect_metrics.py` writes
+`synth/out/metrics.csv` and `synth/out/metrics.md`. A finished run is skipped on re-run, so
+an interrupted batch can simply be restarted; `ONLY="nov16_10p0 soc16_10p0"` limits it.
+`unresolved.rpt` must report 0 unresolved references for every run, and the "Power source"
+column must say VCD for every run except the front end.
+
+### Switching activity (shipped, no simulator needed)
+
+`synth/vcd/*.vcd.gz` were produced by `tb_sw_flow` (encode + train + search + normalize at
+D = 5024, the real PicoRV32 firmware) simulated on the sky130 OpenRAM Verilog models
+(`-DSYNTHESIS`, so instance names match the netlist), 1 ps timescale, 10 ns clock:
+
+| File | Lanes | Window (`+vcd_core`) | Used for |
+|---|---|---|---|
+| `nov16.vcd`, `nov32.vcd` | 16 / 32 | novelty core busy | `nov_top` |
+| `base16.vcd` | – | baseline core busy | `hdcu_top` |
+| `busy16.vcd`, `busy32.vcd` | 16 / 32 | either HDC core busy | `hdc_soc_top` |
+
+Each file holds only its window's cycles, back to back (`synth/splice_vcd.py` removes the
+idle gaps and the OpenRAM models' X transients), so power is the block's power **while it
+works**. The two lane widths do different amounts of work per busy cycle (normalize takes
+2x the cycles at 32 bits), so compare them by **energy for the same workload**:
+`collect_metrics.py` multiplies power by each window's length (`synth/vcd/windows.txt`). To regenerate one (needs Icarus Verilog), from a `run_all.sh` run directory:
+```
+cd $RUN_DIR/swflow
+iverilog -g2012 -DSYNTHESIS -DFOUR_BANKS -DDUMP_VCD [-DNOV_LANE32] -I. -I.. -o vcd.out \
+  <package>/sky130_sram_*.v ../hdcu_pkg.sv \
+  $(cd .. && ls *.sv *.v | grep -vE '^(hdcu_pkg|tb_|video_frontend_top|meanstd_sums_unit)' | sed 's|^|../|') \
+  <package>/tb/tb_sw_flow.sv
+vvp -n vcd.out +vcd_core=nov      # nov | base | busy | all  -> activity.vcd
+```
+
+### Single run by hand
+
+```
+cat > my_run.tcl <<'T'
+set PDK_ROOT /path/to/sky130A; set TOP nov_top; set LANE 16; set CLK_NS 10.0
+set VCD synth/vcd/nov16.vcd; set VCD_SCOPE tb_sw_flow/dut/u_nov
+source synth/genus_synth.tcl; exit
+T
+genus -batch -files my_run.tcl -log synth/out/my_run
+```
+
+## Memories: synchronous sky130 SRAM macros
+
+The memory modules (`spm`, `spm_bit_comb`, `spm_wide`, `soc_mem`) select their
+implementation with `` `ifdef SYNTHESIS ``:
+- **`SYNTHESIS` defined** (synthesis, and simulation against the OpenRAM `.v` models): the
+  module instantiates the sky130 OpenRAM macros below.
+- **undefined** (functional simulation): a macro-faithful behavioural model — 1-cycle
+  synchronous read, read data valid only in the cycle after a read and X otherwise, X on
+  a same-address read/write — with a flat `mem`/`memory` back-door array.
+
+Controller timing: every chunk loop is an address phase (read) then a data phase (compute,
+write); `hdc_soc_top` gives every memory-mapped access an address cycle (read) and a data
+cycle (write, merged with the read data for the wide-SPM lane store). `run_all.sh` checks
+the SoC on the real OpenRAM models and fails on any same-address read/write collision.
+
+Genus: `synth/genus_synth.tcl` reads `synth/filelist_macro.f` with `-define SYNTHESIS` and
+the macro `.lib` files from `MEM_LIBS`; `unresolved.rpt` must report no unresolved
+references.
+
+| Block | Memory | Words x bits | sky130 macro (count) |
+|---|---|---|---|
+| Baseline HDCU | `spm` x 4 banks | 256 x 32 each | `sky130_sram_1kbyte_1rw1r_32x256_8` (4) |
+| Novelty | `spm_bit_comb` (u_bit_spm_a, _b) | 512 x 32 each | `sky130_sram_2kbyte_1rw1r_32x512_8` (2) |
+| Novelty | `spm_wide` | 1024 x 512 (32 lanes x int16; 1024 x 1024 with `NOV_LANE32`) | `sky130_sram_4kbyte_1rw1r_32x1024_8` (16, two lanes each; 32 with `NOV_LANE32`) |
+| SoC | `soc_mem` (main memory) | MEM_WORDS x 32 (4096 default) | `sky130_sram_8kbyte_1rw1r_32x2048_8` (MEM_WORDS / 2048) |
+
+**Main memory sizing** is driven by the hypervector tables the firmware streams into the
+novelty bit SPM: 76 level HVs + 1010 position HVs at D = 5024 bits = **682 KB** with the
+notebook's random position vectors, or **~51 KB** if position vectors are generated by
+rotating one seed per group (accuracy mode I in `scripts/hw_accuracy_eval.py`). Firmware
+and prototypes add a few KB. Off-chip memory for the tables is the other option.
+
+The video front end's internal arrays (frame store, running sums, per-unit buffers) are
+listed by the Yosys run below; the large ones are accessed one entry per cycle and can
+be mapped to register files.
+
+## Early, library-independent estimate (Yosys, generic gates)
+
+`yosys_ge.py` converts Yosys generic-gate counts to NAND2 equivalents (GE). Memories are
+black boxes. SIMD = 32. These numbers are for relative comparison only. (It accepts both
+the old `name count` and new `count name` Yosys `stat` orderings.)
+
+The sky130 Genus results are in `synthesis/genus/` at the repository root.

@@ -1,0 +1,18 @@
+OpenSTA 3.1.0 f7100b9276 Copyright (c) 2026, Parallax Software, Inc.
+License GPLv3: GNU GPL version 3 <http://gnu.org/licenses/gpl.html>
+
+This is free software, and you are free to change and redistribute it
+under certain conditions; type `show_copying' for details. 
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show_warranty'.
+Warning 310: soc16.tcl line 94, activity cannot be set on clock ports.
+Group                   Internal   Switching     Leakage       Total
+                           Power       Power       Power       Power (Watts)
+--------------------------------------------------------------------
+Sequential           1.55519e-02 1.53722e-05 3.71674e-08 1.55673e-02   0.0%
+Combinational        1.71903e-03 1.78246e-03 8.18654e-08 3.50158e-03   0.0%
+Clock                0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00   0.0%
+Macro                8.12092e+07 0.00000e+00 7.71832e-04 8.12092e+07 100.0%
+Pad                  0.00000e+00 0.00000e+00 0.00000e+00 0.00000e+00   0.0%
+--------------------------------------------------------------------
+Total                8.12092e+07 1.79784e-03 7.71870e-04 8.12092e+07 100.0%
+                          100.0%        0.0%        0.0%

@@ -1,0 +1,30 @@
+{
+ "cycles": 14210.0,
+ "span_ps": 142100000,
+ "flops": 254,
+ "flops_annotated": 254,
+ "macros": 4,
+ "macros_found": 4,
+ "sram": {
+  "g_spm[0].u_spm_a_u_sram": {
+   "cell": "sky130_sram_1kbyte_1rw1r_32x256_8",
+   "port0_cycles": 1515.0,
+   "port1_cycles": 1452.0
+  },
+  "g_spm[1].u_spm_a_u_sram": {
+   "cell": "sky130_sram_1kbyte_1rw1r_32x256_8",
+   "port0_cycles": 2289.0,
+   "port1_cycles": 1008.0
+  },
+  "g_spm[2].u_spm_a_u_sram": {
+   "cell": "sky130_sram_1kbyte_1rw1r_32x256_8",
+   "port0_cycles": 5808.0,
+   "port1_cycles": 255.0
+  },
+  "g_spm[3].u_spm_a_u_sram": {
+   "cell": "sky130_sram_1kbyte_1rw1r_32x256_8",
+   "port0_cycles": 4096.0,
+   "port1_cycles": 4335.0
+  }
+ }
+}

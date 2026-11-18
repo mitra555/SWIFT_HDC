@@ -1,0 +1,107 @@
+[
+ {
+  "seed": 0,
+  "D": 5024,
+  "K": 101,
+  "rows": 16014,
+  "fits": false,
+  "SWIFT": 0.6486915146708961,
+  "SWIFT_noretrain": 0.6235791699709226,
+  "baseline": 0.15331747290510178,
+  "OnlineHD": 0.6978588421887391,
+  "linear_probe": 0.7766323024054983,
+  "seconds": 905
+ },
+ {
+  "seed": 0,
+  "D": 1024,
+  "K": 101,
+  "rows": 3264,
+  "fits": false,
+  "SWIFT": 0.5038329368226275,
+  "SWIFT_noretrain": 0.514406555643669,
+  "baseline": 0.054982817869415807,
+  "seconds": 104
+ },
+ {
+  "seed": 0,
+  "D": 320,
+  "K": 101,
+  "rows": 1020,
+  "fits": true,
+  "SWIFT": 0.3288395453343907,
+  "SWIFT_noretrain": 0.3407348665080624,
+  "baseline": 0.024054982817869417,
+  "seconds": 30
+ },
+ {
+  "seed": 1,
+  "D": 5024,
+  "K": 101,
+  "rows": 16014,
+  "fits": false,
+  "SWIFT": 0.627015596087761,
+  "SWIFT_noretrain": 0.6238435104414486,
+  "baseline": 0.15675389902194026,
+  "OnlineHD": 0.6983875231297911,
+  "linear_probe": 0.7700237906423474,
+  "seconds": 914
+ },
+ {
+  "seed": 1,
+  "D": 1024,
+  "K": 101,
+  "rows": 3264,
+  "fits": false,
+  "SWIFT": 0.5035685963521015,
+  "SWIFT_noretrain": 0.5088554057626222,
+  "baseline": 0.04017975151995771,
+  "seconds": 94
+ },
+ {
+  "seed": 1,
+  "D": 320,
+  "K": 101,
+  "rows": 1020,
+  "fits": true,
+  "SWIFT": 0.31535818133756277,
+  "SWIFT_noretrain": 0.32487443827650014,
+  "baseline": 0.02035421623050489,
+  "seconds": 25
+ },
+ {
+  "seed": 2,
+  "D": 5024,
+  "K": 101,
+  "rows": 16014,
+  "fits": false,
+  "SWIFT": 0.6399682791435368,
+  "SWIFT_noretrain": 0.6214644462067143,
+  "baseline": 0.1485593444356331,
+  "OnlineHD": 0.7047316944224161,
+  "linear_probe": 0.767116045466561,
+  "seconds": 868
+ },
+ {
+  "seed": 2,
+  "D": 1024,
+  "K": 101,
+  "rows": 3264,
+  "fits": false,
+  "SWIFT": 0.5038329368226275,
+  "SWIFT_noretrain": 0.5151995770552471,
+  "baseline": 0.0520750726936294,
+  "seconds": 107
+ },
+ {
+  "seed": 2,
+  "D": 320,
+  "K": 101,
+  "rows": 1020,
+  "fits": true,
+  "SWIFT": 0.31958762886597936,
+  "SWIFT_noretrain": 0.3283108643933386,
+  "baseline": 0.025376685170499604,
+  "seconds": 30
+ }
+]
